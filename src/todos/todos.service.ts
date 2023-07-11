@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { TodoStatus } from '@prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 import { TodoEntity } from './entity/todos.entity';
 import { CreateTodoDTO } from './dto/create-todo.dto';
 import { UpdateTodoDTO } from './dto/update-todo.dto';
+import { UpdateTodoStatusDTO } from './dto/update-todo-status.dto';
 
 @Injectable()
 export class TodosService {
@@ -27,9 +29,22 @@ export class TodosService {
     });
   }
 
+  async getTodoByStatus(status: TodoStatus): Promise<TodoEntity[]> {
+    return this.prisma.todos.findMany({
+      where: { status, },
+    });
+  }
+
   async createTodo(createTodoDto: CreateTodoDTO): Promise<TodoEntity> {
     return this.prisma.todos.create({
       data: createTodoDto,
+    });
+  }
+
+  async updateTodoStatus(id: number, updateTodoStatusDto: UpdateTodoStatusDTO): Promise<TodoEntity> {
+    return this.prisma.todos.update({
+      where: { id, },
+      data: updateTodoStatusDto,
     });
   }
 

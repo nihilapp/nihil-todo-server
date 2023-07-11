@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTodoDTO } from './create-todo.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
-export class UpdateTodoDTO extends PartialType(CreateTodoDTO) {}
+export class UpdateTodoDTO {
+  @IsNotEmpty({ message: '할 일을 입력해야합니다.', })
+  @ApiProperty({ description: '할 일', example: '할 일', })
+  content: string;
+}

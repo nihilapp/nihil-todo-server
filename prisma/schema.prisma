@@ -40,7 +40,7 @@ enum UserRole {
 
 model UserAuth {
   id             Int    @id @default(autoincrement())
-  user           User   @relation(fields: [userId], references: [id])
+  User           User   @relation(fields: [userId], references: [id])
   userId         Int    @unique
   hashedPassword String @db.VarChar(300)
 
@@ -50,7 +50,7 @@ model UserAuth {
 
 model UserToken {
   id                 Int     @id @default(autoincrement())
-  user               User    @relation(fields: [userId], references: [id])
+  User               User    @relation(fields: [userId], references: [id])
   userId             Int     @unique
   hashedRefreshToken String? @db.VarChar(300)
 
@@ -60,7 +60,7 @@ model UserToken {
 
 model Withdrawal {
   id      Int      @id @default(autoincrement())
-  user    User     @relation(fields: [userId], references: [id])
+  User    User     @relation(fields: [userId], references: [id])
   userId  Int      @unique
   text    String?  @default("입력된 내용이 없습니다.") @db.VarChar(1000)
   created DateTime @default(now())

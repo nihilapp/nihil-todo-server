@@ -1,10 +1,10 @@
 import {
   Body, Controller, Delete, Get, Param, Patch, Post
 } from '@nestjs/common';
-import { UserRole } from '@prisma/client';
+import { TodoStatus, UserRole } from '@prisma/client';
 import {
   ApiBody,
-  ApiOkResponse, ApiOperation, ApiParam, ApiUnauthorizedResponse
+  ApiOkResponse, ApiOperation, ApiParam, ApiTags, ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { TodosService } from './todos.service';
 import { TodoEntity } from './entity/todos.entity';
@@ -12,8 +12,10 @@ import { CreateTodoDTO } from './dto/create-todo.dto';
 import { UpdateTodoDTO } from './dto/update-todo.dto';
 import { Auth } from '@/auth/decorator';
 import { HttpErrorDTO } from '@/common/dto';
+import { UpdateTodoStatusDTO } from './dto/update-todo-status.dto';
 
 @Controller('todos')
+@ApiTags('Todos')
 export class TodosController {
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -60,6 +62,21 @@ export class TodosController {
     return this.todosService.getTodoByUserId(userId);
   }
 
+  @Get('/status/:statusValue')
+  @ApiOkResponse({ description: '성공', type: () => TodoEntity, isArray: true, })
+  @ApiOperation({
+    summary: '특정 상태의 할 일 조회',
+    description: '특정 상태의 할 일을 조회합니다.',
+  })
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    description: '유저의 id를 입력합니다.',
+  })
+  async getTodoByStatus(@Param('statusValue') status: TodoStatus) {
+    return this.todosService.getTodoByStatus(status);
+  }
+
   @Post('')
   @Auth([ UserRole.ADMIN, UserRole.USER, ])
   @ApiOkResponse({ description: '성공', type: () => TodoEntity, })
@@ -74,6 +91,30 @@ export class TodosController {
   })
   async createTodo(@Body() createTodoDto: CreateTodoDTO): Promise<TodoEntity> {
     return this.todosService.createTodo(createTodoDto);
+  }
+
+  @Patch('/:id/status')
+  @Auth([ UserRole.ADMIN, UserRole.USER, ])
+  @ApiOkResponse({ description: '성공', type: () => TodoEntity, })
+  @ApiUnauthorizedResponse({ description: '인증 실패', type: HttpErrorDTO, })
+  @ApiOperation({
+    summary: '할 일 상태 수정',
+    description: '할 일 상태를 수정합니다.',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'id를 입력합니다.',
+  })
+  @ApiBody({
+    type: UpdateTodoDTO,
+    description: '새로운 할 일 상태 데이터를 전달합니다.',
+  })
+  async updateTodoStatus(
+    @Param('id') id: number,
+    @Body() updateTodoStatusDto: UpdateTodoStatusDTO
+  ) {
+    return this.todosService.updateTodoStatus(id, updateTodoStatusDto);
   }
 
   @Patch('/:id')
