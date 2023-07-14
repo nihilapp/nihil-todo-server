@@ -12,12 +12,12 @@
   },
   "homepage": "https://github.com/nihil-template/nihil-nest-template#readme",
   "scripts": {
-    "build": "nest build",
+    "build": "yarn run p:migrate && nest build",
     "n:dev": "nest start --watch",
     "n:start": "nest start",
     "p:init": "npx prisma init",
-    "p:create": "npx prisma migrate dev --create-only",
-    "p:migrate": "npx prisma migrate dev",
+    "p:create": "npx prisma migrate dev --create-only --name update",
+    "p:migrate": "npx prisma migrate dev  --name update",
     "p:push": "npx prisma db push",
     "p:pull": "npx prisma db pull",
     "p:studio": "npx prisma studio"
