@@ -63,18 +63,18 @@ export class SubTodosController {
     return this.subTodosService.getSubTodoByUserId(userId);
   }
 
-  @Get('/status/:statusValue')
+  @Get('/status/:status')
   @ApiOkResponse({ description: '성공', type: () => SubTodoEntity, isArray: true, })
   @ApiOperation({
     summary: '특정 상태의 할 일 조회',
     description: '특정 상태의 할 일을 조회합니다.',
   })
   @ApiParam({
-    name: 'userId',
+    name: 'status',
     type: String,
-    description: '유저의 id를 입력합니다.',
+    description: '할 일의 상태를 입력합니다.',
   })
-  async getSubTodoByStatus(@Param('statusValue') status: TodoStatus) {
+  async getSubTodoByStatus(@Param('status') status: TodoStatus) {
     return this.subTodosService.getSubTodoByStatus(status);
   }
 
