@@ -23,14 +23,19 @@ export class SubTodosController {
     private readonly subTodosService: SubTodosService
   ) { }
 
-  @Get('')
+  @Get('/todo/:todoId')
   @ApiOkResponse({ description: '성공', type: () => SubTodoEntity, isArray: true, })
   @ApiOperation({
     summary: '모든 할 일 조회',
     description: '모든 할 일을 조회합니다.',
   })
-  async getSubTodos(): Promise<SubTodoEntity[]> {
-    return this.subTodosService.getSubTodos();
+  @ApiParam({
+    name: 'todoId',
+    type: String,
+    description: '상위 할 일의 id를 입력합니다.',
+  })
+  async getSubTodos(@Param('todoId') todoId: number): Promise<SubTodoEntity[]> {
+    return this.subTodosService.getSubTodos(todoId);
   }
 
   @Get('/:id')
@@ -147,7 +152,7 @@ export class SubTodosController {
     return this.subTodosService.updateSubTodo(id, updateTodoDto);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @Auth([ UserRole.ADMIN, UserRole.USER, ])
   @ApiUnauthorizedResponse({ description: '인증 실패', type: HttpErrorDTO, })
   @ApiOperation({

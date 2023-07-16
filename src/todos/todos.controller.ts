@@ -141,7 +141,7 @@ export class TodosController {
     return this.todosService.updateTodo(id, updateTodoDto);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @Auth([ UserRole.ADMIN, UserRole.USER, ])
   @ApiUnauthorizedResponse({ description: '인증 실패', type: HttpErrorDTO, })
   @ApiOperation({

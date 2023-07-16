@@ -14,7 +14,11 @@ export class TodosService {
   ) { }
 
   async getTodos(): Promise<TodoEntity[]> {
-    return this.prisma.todos.findMany();
+    return this.prisma.todos.findMany({
+      orderBy: {
+        created: 'desc',
+      },
+    });
   }
 
   async getTodoById(id: number): Promise<TodoEntity> {
@@ -41,14 +45,20 @@ export class TodosService {
     });
   }
 
-  async updateTodoStatus(id: number, updateTodoStatusDto: UpdateTodoStatusDTO): Promise<TodoEntity> {
+  async updateTodoStatus(
+    id: number,
+    updateTodoStatusDto: UpdateTodoStatusDTO
+  ): Promise<TodoEntity> {
     return this.prisma.todos.update({
       where: { id, },
       data: updateTodoStatusDto,
     });
   }
 
-  async updateTodo(id: number, updateTodoDto: UpdateTodoDTO): Promise<TodoEntity> {
+  async updateTodo(
+    id: number,
+    updateTodoDto: UpdateTodoDTO
+  ): Promise<TodoEntity> {
     return this.prisma.todos.update({
       where: { id, },
       data: updateTodoDto,

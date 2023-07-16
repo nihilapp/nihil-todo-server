@@ -13,8 +13,13 @@ export class SubTodosService {
     private readonly prisma: PrismaService
   ) { }
 
-  async getSubTodos(): Promise<SubTodoEntity[]> {
-    return this.prisma.subTodos.findMany();
+  async getSubTodos(todoId: number): Promise<SubTodoEntity[]> {
+    return this.prisma.subTodos.findMany({
+      where: { todoId, },
+      orderBy: {
+        created: 'desc',
+      },
+    });
   }
 
   async getSubTodoById(id: number): Promise<SubTodoEntity> {
