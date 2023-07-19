@@ -9,6 +9,7 @@ import { WithdrawalModule } from './withdrawal/withdrawal.module';
 import { FileModule } from './file/file.module';
 import { TodosModule } from './todos/todos.module';
 import { SubTodosModule } from './sub-todos/sub-todos.module';
+import { UserActivityModule } from './user-activity/user-activity.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SubTodosModule } from './sub-todos/sub-todos.module';
     FileModule,
     TodosModule,
     SubTodosModule,
+    UserActivityModule,
   ],
 })
 export class AppModule implements NestModule {

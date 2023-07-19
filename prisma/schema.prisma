@@ -11,18 +11,19 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  userName   String       @unique
-  role       UserRole     @default(USER)
-  status     UserStatus   @default(ACTIVE)
-  created    DateTime     @default(now())
-  updated    DateTime     @updatedAt
-  UserAuth   UserAuth[]
-  UserToken  UserToken[]
-  Withdrawal Withdrawal[]
-  Todos      Todos[]
-  SubTodos   SubTodos[]
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  userName     String         @unique
+  role         UserRole       @default(USER)
+  status       UserStatus     @default(ACTIVE)
+  created      DateTime       @default(now())
+  updated      DateTime       @updatedAt
+  UserAuth     UserAuth[]
+  UserToken    UserToken[]
+  Withdrawal   Withdrawal[]
+  Todos        Todos[]
+  SubTodos     SubTodos[]
+  UserActivity UserActivity[]
 
   @@map("user")
 }
@@ -56,6 +57,16 @@ model UserToken {
 
   @@index([userId], map: "user_token_user_id_fk")
   @@map("user_token")
+}
+
+model UserActivity {
+  id         Int     @id @default(autoincrement())
+  User       User    @relation(fields: [userId], references: [id])
+  userId     Int     @unique
+  isLoggedIn Boolean
+
+  @@index([userId], map: "user_activity_user_id_fk")
+  @@map("user_activity")
 }
 
 model Withdrawal {

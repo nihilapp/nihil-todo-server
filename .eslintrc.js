@@ -67,6 +67,7 @@ module.exports = {
     'lines-between-class-members': 'off',
     'arrow-body-style': 'off',
     'no-tabs': [ 'warn', { allowIndentationTabs: true, }, ],
+    'no-empty-function': 'off',
 
     // 임포트 규칙
     'import/extensions': 'off',

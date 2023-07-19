@@ -86,6 +86,13 @@ export class AuthService {
       },
     });
 
+    await this.prisma.userActivity.create({
+      data: {
+        userId: user.id,
+        isLoggedIn: false,
+      },
+    });
+
     return {
       message: '회원가입이 완료되었습니다.',
       user,

@@ -13,12 +13,17 @@ import { SignInDTO, UserResDTO } from './dto';
 import { ErrorResponseDTO, HttpErrorDTO } from '@/common/dto';
 import { CreateUserDTO } from '@/user/dto/create-user.dto';
 import { UserEntity } from '@/user/entity/user.entity';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
-  // eslint-disable-next-line no-unused-vars
-  constructor(private readonly authService: AuthService) { }
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private readonly authService: AuthService,
+    // eslint-disable-next-line no-unused-vars
+    private readonly prisma: PrismaService
+  ) {}
 
   @Post('signup')
   @ApiOperation({
@@ -81,6 +86,13 @@ export class AuthController {
     res.cookie('Refresh', RefreshToken, RTOption);
 
     const tokenExp = await this.authService.verifyToken(AccessToken);
+
+    await this.prisma.userActivity.update({
+      where: { userId: user.id, },
+      data: {
+        isLoggedIn: true,
+      },
+    });
 
     return {
       message: '로그인 성공',
@@ -172,6 +184,13 @@ export class AuthController {
     res.cookie('Authentication', AccessToken, option);
 
     const tokenExp = await this.authService.verifyToken(AccessToken);
+
+    await this.prisma.userActivity.update({
+      where: { userId: user.id, },
+      data: {
+        isLoggedIn: false,
+      },
+    });
 
     return {
       message: '액세스 토큰 갱신 완료',
