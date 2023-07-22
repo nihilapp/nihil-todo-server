@@ -16,7 +16,7 @@ export class TodosService {
   async getTodos(): Promise<TodoEntity[]> {
     return this.prisma.todos.findMany({
       orderBy: {
-        created: 'desc',
+        id: 'desc',
       },
     });
   }

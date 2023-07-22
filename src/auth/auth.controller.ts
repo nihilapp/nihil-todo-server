@@ -133,6 +133,13 @@ export class AuthController {
     res.cookie('Authentication', '', accessOption);
     res.cookie('Refresh', '', refreshOption);
 
+    await this.prisma.userActivity.update({
+      where: { userId: user.id, },
+      data: {
+        isLoggedIn: false,
+      },
+    });
+
     return {
       message: '로그아웃 성공',
     };
@@ -184,13 +191,6 @@ export class AuthController {
     res.cookie('Authentication', AccessToken, option);
 
     const tokenExp = await this.authService.verifyToken(AccessToken);
-
-    await this.prisma.userActivity.update({
-      where: { userId: user.id, },
-      data: {
-        isLoggedIn: false,
-      },
-    });
 
     return {
       message: '액세스 토큰 갱신 완료',

@@ -97,7 +97,7 @@ model SubTodos {
   id      Int        @id @default(autoincrement())
   User    User       @relation(fields: [userId], references: [id])
   userId  Int
-  Todos   Todos      @relation(fields: [todoId], references: [id])
+  Todos   Todos      @relation(fields: [todoId], references: [id], onDelete: Cascade)
   todoId  Int
   status  TodoStatus @default(ADDED)
   created DateTime   @default(now())
