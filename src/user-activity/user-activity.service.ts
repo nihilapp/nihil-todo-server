@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AuthService } from '@/auth/auth.service';
+import { UserIdDTO } from './dto/user-id.dto';
 
 @Injectable()
 export class UserActivityService {
@@ -11,9 +12,9 @@ export class UserActivityService {
     private readonly authService: AuthService
   ) {}
 
-  async activityCheck(userId: number): Promise<boolean> {
+  async activityCheck(userIdDto: UserIdDTO): Promise<boolean> {
     const userActivity = await this.prisma.userActivity.findUnique({
-      where: { userId, },
+      where: { userId: userIdDto.userId, },
     });
 
     return userActivity.isLoggedIn;

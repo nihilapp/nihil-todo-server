@@ -30,12 +30,18 @@ export class TodosService {
   async getTodoByUserId(userId: number): Promise<TodoEntity[]> {
     return this.prisma.todos.findMany({
       where: { userId, },
+      orderBy: {
+        id: 'desc',
+      },
     });
   }
 
   async getTodoByStatus(status: TodoStatus): Promise<TodoEntity[]> {
     return this.prisma.todos.findMany({
       where: { status, },
+      orderBy: {
+        id: 'desc',
+      },
     });
   }
 
